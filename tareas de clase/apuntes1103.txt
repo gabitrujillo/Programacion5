@@ -1,0 +1,110 @@
+INVESTIGAR : Currying funtions o uncurry
+-unaria que recibe un solo Valores
+-binaria que recibe 2
+--------------------------------------------
+Currying .- devuelve un funcion 
+suma :: Int -> Int  -> Int
+suma x y = x + y
+
+suma' :: Int -> (Int -> Int)
+suma' x = (\y -> x+ y)
+
+suma''  :: Int -> Int
+suma'' x = (suma x)
+
+resultado :: Int
+resultado = suma'' 5
+resultado 3
+----------------otra manera---------------------------
+add’ :: Int -> (Int -> Int)
+add’ x y = x+y
+add’ x = (\y -> x+y)
+
+resultado :: Int
+resultado = (add’ 5) 8
+
+add_3 ::Int -> (Int -> (Int -> Int))
+add_3 x y z = x+y+z
+
+resultado1 :: Int
+resultado1 = (())
+-------------------------------------------------------
+EITHER TYPE
+---------------------------------------------------------
+se puede utilzar para hacer la tarea 
+Left= ERRORES
+Right = Valores correcto
+-------------------------------------------
+data Either  a b = Left a | Right b
+--------------------------------------------
+module Example where
+
+
+eitherToMaybe :: Either b a -> Maybe a 
+eitherToMaybe e =
+    case e of
+        Left _ -> Nothing
+        Right val -> Just val
+--------------------------------------------
+handleMissRight :: Either String (Maybe a) -> Either String a
+handleMissRight e = 
+    case e of
+    left err -> left err
+    Right (just val) -> Right val
+    Right Nothing -> Left "Mising "
+-----------------------------------------------------------
+handleMissRight :: Either String (Maybe a ) -> Either String a
+handleMissRight e = 
+    case e of
+    Left err -> Left "Esta mal"
+    Right Nothing -> Left "Sos especial"
+    Right (Just val) -> Right val
+------------------------------------------------------------------
+foldl o foldr
+
+foldl :: (b -> a -> b) -> b -> [a] -> b
+foldr :: (a-> b -> b ) -> b -> [a]-> b
+
+Ejemplo
+
+sumList :: [Int] -> Int
+sumList = foldr (+) 0
+
+(\x -> foldr (+) 0 x)
+
+el caso base seria el 0
+
+foldr replaces the empty lis constrructor [] with the base case
+It them applies the binary operator (+) to each element of the list from right to left
+
+foldl:
+sumList :: [Int] -> Int
+sumList = foldl (+) 0
+
+Comparison:
+foldr es recurisvo
+foldl no es recurisvo
+foldr se puede trabajar con listas infinitas                          ---qick che te lo genera test case
+foldl 
+
+Examples : Product 
+---------------------------------------------------------------------------------------------
+Binary tree : 
+Binary tree son tipos de datos algebraicos y poder moverse en las estructuras de datos
+
+data BinaryTree a = EmptyTree
+    |Node a (BinaryTree a) (BinaryTree a)
+
+               LOG a
+            NODO A
+    BinaryTree         BinaryTree
+
+----Example:
+exampleTree :: BinaryTree Int
+exampleTree =
+***********************************************************************************
+--Como se muve a travez de un arbol
+--In--Order--trasversal
+inOrder :: BinaryTree a -> [a]
+inOrder EmptyTree = []
+inOrder (Node value left right) = inOrder left ++ [value] ++ inOrder right
